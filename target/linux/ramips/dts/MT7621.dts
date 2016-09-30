@@ -1,0 +1,170 @@
+/dts-v1/;
+
+#include "mt7621.dtsi"
+
+/ {
+	compatible = "mediatek,mt7621-eval-board", "mediatek,mt7621-soc";
+	model = "Mediatek MT7621 evaluation board";
+
+	memory@0 {
+		device_type = "memory";
+		reg = <0x0 0x10000000>;
+	};
+
+	chosen {
+		bootargs = "console=ttyS0,57600";
+	};
+
+	nand@1e003000 {
+		status = "okay";
+
+		partition@0 {
+			label = "uboot";
+			reg = <0x00000 0x80000>; /* 64 KB */
+			read-only;
+		};
+
+		partition@80000 {
+			label = "uboot_env";
+			reg = <0x80000 0x80000>; /* 64 KB */
+		};
+
+		factory: partition@100000 {
+			label = "factory";
+			reg = <0x100000 0x80000>;
+		};
+
+		partition@180000 {
+			label = "kernel";
+			reg = <0x180000 0x400000>;
+		};
+
+		partition@580000 {
+			label = "rootfs";
+			reg = <0x580000 0x17c0000>;
+		};
+
+		partition@1d40000 {
+			label = "config";
+			reg = <0x1d40000 0x80000>;
+		};
+
+		partition@1dc0000 {
+			label = "storage";
+			reg = <0x1dc0000 0x200000>;
+		};
+
+		partition@1fc0000 {
+			label = "dump";
+			reg = <0x1fc0000 0x40000>;
+		};
+
+		partition@2000000 {
+			label = "ubi";
+			reg = <0x2000000 0x5f80000>;
+		};
+	};
+
+	gpio-leds {
+		compatible = "gpio-leds";
+
+		fn {
+			label = "kng_re:green:fn";
+			gpios = <&gpio0 12 1>;
+		};
+
+		usb1 {
+			label = "kng_re:green:usb1";
+			gpios = <&gpio0 13 1>;
+		};
+
+		usb2 {
+			label = "kng_re:green:usb2";
+			gpios = <&gpio0 14 1>;
+		};
+
+		wlan2g {
+			label = "kng_re:green:wlan2g";
+			gpios = <&gpio0 15 1>;
+		};
+
+		wlan5g {
+			label = "kng_re:green:wlan5g";
+			gpios = <&gpio0 16 1>;
+		};
+
+		internet {
+			label = "kng_re:green:internet";
+			gpios = <&gpio0 17 1>;
+		};
+	};
+
+	gpio-keys-polled {
+		compatible = "gpio-keys-polled";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		poll-interval = <20>;
+
+		reset {
+			label = "reset";
+			gpios = <&gpio0 6 1>;
+			linux,code = <0x198>;
+		};
+
+		mode {
+			label = "mode";
+			gpios = <&gpio0 18 1>;
+			linux,code = <0x100>;
+		};
+	};
+};
+
+&sdhci {
+	status = "disabled";
+};
+
+&xhci {
+	status = "okay";
+};
+
+&pinctrl {
+	state_default: pinctrl0 {
+		gpio {
+			ralink,group = "i2c", "uart2", "uart3", "rgmii2", "jtag";
+			ralink,function = "gpio";
+		};
+	};
+};
+
+&pcie {
+	status = "okay";
+
+	pcie0 {
+		mt76@0,0 {
+			reg = <0x0000 0 0 0 0>;
+			device_type = "pci";
+			mediatek,mtd-eeprom = <&factory 0x8000>;
+			mediatek,2ghz = <1>;
+			mediatek,5ghz = <1>;
+		};
+	};
+
+	pcie1 {
+		mt76@1,0 {
+			reg = <0x0000 0 0 0 0>;
+			device_type = "pci";
+			mediatek,mtd-eeprom = <&factory 0x0000>;
+			mediatek,2ghz = <1>;
+			mediatek,5ghz = <1>;
+		};
+	};
+};
+
+&ethernet {
+	mtd-mac-address = <&factory 0x4>;
+	mediatek,portmap = "llllw";
+};
+
+&spi0 {
+	status = "disabled";
+};
