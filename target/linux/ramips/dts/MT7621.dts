@@ -70,32 +70,32 @@
 
 		fn {
 			label = "kng_re:green:fn";
-			gpios = <&gpio0 12 1>;
+			gpios = <&gpio0 12 GPIO_ACTIVE_HIGH>;
 		};
 
 		usb1 {
 			label = "kng_re:green:usb1";
-			gpios = <&gpio0 13 1>;
+			gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>;
 		};
 
 		usb2 {
 			label = "kng_re:green:usb2";
-			gpios = <&gpio0 14 1>;
+			gpios = <&gpio0 14 GPIO_ACTIVE_HIGH>;
 		};
 
 		wlan2g {
 			label = "kng_re:green:wlan2g";
-			gpios = <&gpio0 15 1>;
+			gpios = <&gpio0 15 GPIO_ACTIVE_HIGH>;
 		};
 
 		wlan5g {
 			label = "kng_re:green:wlan5g";
-			gpios = <&gpio0 16 1>;
+			gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>;
 		};
 
 		internet {
 			label = "kng_re:green:internet";
-			gpios = <&gpio0 17 1>;
+			gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
 		};
 	};
 
